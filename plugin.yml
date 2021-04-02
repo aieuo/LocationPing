@@ -1,0 +1,10 @@
+name: Main
+main: aieuo\ping\LocationPing
+version: 0.1.0
+api: 3.0.0
+load: POSTWORLD
+depend:
+  - Texter
+softdepend:
+  - Mineflow
+author: aieuo
