@@ -4,6 +4,7 @@ namespace aieuo\ping;
 
 use aieuo\mineflow\flowItem\FlowItemFactory;
 use aieuo\ping\mineflow\action\SetPingPosition;
+use aieuo\ping\signal\data\PingData;
 use aieuo\ping\signal\SignalFloatingTextCluster;
 use jp\mcbe\fuyutsuki\Texter\text\SendType;
 use pocketmine\math\Vector3;
@@ -18,6 +19,7 @@ class LocationPing extends PluginBase {
     /** @var SignalFloatingTextCluster[][] */
     private static $texts = [];
 
+    /** @var int */
     public static $maxDistance = 100;
 
     /** @noinspection ReturnTypeCanBeDeclaredInspection */
@@ -96,25 +98,25 @@ class LocationPing extends PluginBase {
             if ($name === $player->getName()) {
                 self::removeText($name);
             } else {
-                $text->sendToPlayer($player, new SendType(SendType::REMOVE));
+                if ($player->isOnline()) $text->sendToPlayer($player, new SendType(SendType::REMOVE));
                 unset(self::$texts[$player->getName()][$name]);
             }
         }
     }
 
-    public static function setPing(Player $player, Vector3 $pos): void {
+    public static function setPing(Player $player, Vector3 $pos, PingData $data): void {
         self::removeText($player->getName());
 
-        self::addText($player, new SignalFloatingTextCluster($pos, $player->getName(), new Vector3(0, -0.3, 0), [
-            TextFormat::GOLD."Move ".round($player->distance($pos), 2)."m",
+        self::addText($player, new SignalFloatingTextCluster($pos, $player->getName(), $data, [
+            $data->getColor().$data->getName()." ".round($player->distance($pos), 2)."m",
             TextFormat::GRAY."click again to cancel"
         ]));
 
         foreach ($player->getLevelNonNull()->getPlayers() as $levelPlayer) {
             if ($player === $levelPlayer) continue;
 
-            self::addText($levelPlayer, new SignalFloatingTextCluster($pos, $player->getName(), new Vector3(0, -0.3, 0), [
-                TextFormat::GOLD."Move ".round($levelPlayer->distance($pos), 2)."m",
+            self::addText($levelPlayer, new SignalFloatingTextCluster($pos, $player->getName(), $data, [
+                $data->getColor().$data->getName()." ".round($levelPlayer->distance($pos), 2)."m",
                 TextFormat::GRAY.$player->getName()
             ]));
         }

@@ -13,6 +13,7 @@ use aieuo\mineflow\formAPI\element\mineflow\PositionVariableDropdown;
 use aieuo\mineflow\utils\Category;
 use aieuo\mineflow\utils\Language;
 use aieuo\ping\LocationPing;
+use aieuo\ping\signal\data\MovePingData;
 use Generator;
 
 class SetPingPosition extends FlowItem implements PlayerFlowItem, PositionFlowItem {
@@ -47,7 +48,7 @@ class SetPingPosition extends FlowItem implements PlayerFlowItem, PositionFlowIt
         $this->throwIfInvalidPlayer($player);
         $position = $this->getPosition($source);
 
-        LocationPing::setPing($player, $position);
+        LocationPing::setPing($player, $position, new MovePingData());
         yield true;
     }
 

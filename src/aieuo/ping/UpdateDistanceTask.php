@@ -6,7 +6,6 @@ use aieuo\ping\signal\SignalFloatingTextCluster;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
-use pocketmine\utils\TextFormat;
 
 class UpdateDistanceTask extends Task {
 
@@ -46,6 +45,7 @@ class UpdateDistanceTask extends Task {
 
         $distance = round($text->position()->distance($player), 2);
 
-        return $left." ".$text->name()." ".TextFormat::GOLD."Move ".$distance."m §f".$right;
+        $data = $text->getPingData();
+        return $left." ".$text->name()." ".$data->getColor().$data->getNameTip()." ".$distance."m §f".$right;
     }
 }
