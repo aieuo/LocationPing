@@ -31,7 +31,7 @@ class EventListener implements Listener {
         $player = $event->getPlayer();
         $item = $event->getItem();
 
-        if ($item->getId() !== ItemIds::STICK) return;
+        if ($item->getId() !== LocationPing::$pingItemId) return;
 
         $target = $player->getTargetBlock(LocationPing::$maxDistance);
         if ($target === null) return;

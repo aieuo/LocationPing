@@ -7,6 +7,7 @@ use aieuo\ping\mineflow\action\SetPingPosition;
 use aieuo\ping\signal\data\PingData;
 use aieuo\ping\signal\SignalFloatingTextCluster;
 use jp\mcbe\fuyutsuki\Texter\text\SendType;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -21,6 +22,8 @@ class LocationPing extends PluginBase {
 
     /** @var int */
     public static $maxDistance = 100;
+    /** @var int */
+    public static $pingItemId = ItemIds::STICK;
 
     /** @noinspection ReturnTypeCanBeDeclaredInspection */
     public function onLoad() {
@@ -36,10 +39,12 @@ class LocationPing extends PluginBase {
             "max_distance" => 100,
             "enable_tip_navigation" => true,
             "tip_navigation_interval" => 4,
+            "ping_item_id" => ItemIds::STICK,
         ]);
         $config->save();
 
         self::$maxDistance = $config->get("max_distance");
+        self::$pingItemId = $config->get("ping_item_id");
 
         Server::getInstance()->getPluginManager()->registerEvents(new EventListener(), $this);
 
