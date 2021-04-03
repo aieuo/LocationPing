@@ -1,4 +1,4 @@
-name: Main
+name: LocationPing
 main: aieuo\ping\LocationPing
 version: 0.1.0
 api: 3.0.0
